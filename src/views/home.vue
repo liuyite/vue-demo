@@ -12,19 +12,19 @@
                     active-text-color="#ffd04b"
                     :unique-opened='true'
                 >
-                    <el-submenu index="1">
+                    <el-submenu :index="first.path" v-for="first in menuList" :key="first.id">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <span>{{first.authName}}</span>
                         </template>
-                        <el-menu-item index="/home/users">
+                        <el-menu-item :index="'/home/'+second.path"  v-for="second in first.children" :key="second.id">
                             <template slot="title">
                                 <i class="el-icon-menu"></i>
-                                <span>用户列表</span>
+                                <span>{{second.authName}}</span>
                             </template>
                         </el-menu-item>
                     </el-submenu>
-                    <el-submenu index="2">
+                    <!-- <el-submenu index="2">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>权限管理</span>
@@ -42,6 +42,54 @@
                             </template>
                         </el-menu-item>
                     </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>商品管理</span>
+                        </template>
+                        <el-menu-item index="/home/lists">
+                            <template slot="title">
+                                <i class="el-icon-menu"></i>
+                                <span>商品列表</span>
+                            </template>
+                        </el-menu-item>
+                        <el-menu-item index="/home/params">
+                            <template slot="title">
+                                <i class="el-icon-menu"></i>
+                                <span>分类参数</span>
+                            </template>
+                        </el-menu-item>
+                        <el-menu-item index="/home/categories">
+                            <template slot="title">
+                                <i class="el-icon-menu"></i>
+                                <span>商品分类</span>
+                            </template>
+                        </el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="4">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>订单管理</span>
+                        </template>
+                        <el-menu-item index="/home/orders">
+                            <template slot="title">
+                                <i class="el-icon-menu"></i>
+                                <span>订单列表</span>
+                            </template>
+                        </el-menu-item>
+                    </el-submenu>
+                     <el-submenu index="5">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>数据统计</span>
+                        </template>
+                        <el-menu-item index="/home/data">
+                            <template slot="title">
+                                <i class="el-icon-menu"></i>
+                                <span>数据报表</span>
+                            </template>
+                        </el-menu-item>
+                    </el-submenu> -->
                 </el-menu>
             </el-aside>
             <el-container>
@@ -58,7 +106,26 @@
     </div>
 </template>
 <script>
-export default {};
+import {rightmenus} from "../api/rights.js"
+export default {
+    data(){
+        return{
+            menuList:[]
+        }
+    },
+    mounted(){
+        this.init()
+    },
+    methods:{
+        async init(){
+            let res = await rightmenus()
+            console.log(res)
+            if(res.data.meta.status ===200){
+                this.menuList = res.data.data
+            }
+        }
+    }
+};
 </script>
 <style lang="less" scoped>
 .home {

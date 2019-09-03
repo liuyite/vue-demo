@@ -4,3 +4,9 @@ export const rightInfo = (type) => {
     url: `rights/${type}`
   })
 }
+
+export const rightmenus = () => {
+  return axios({
+    url: `menus`
+  })
+}
